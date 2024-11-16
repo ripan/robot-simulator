@@ -11,19 +11,10 @@ class Robot
   end
 
   def move_forward
-    case @direction
-    when 'NORTH'
-      @position.y_coord += 1
-    when 'EAST'
-      @position.x_coord += 1
-    when 'SOUTH'
-      @position.y_coord -= 1
-    when 'WEST'
-      @position.x_coord -= 1
-    else
-      raise 'Invalid direction'
-    end
-    validate!
+    raise 'Invalid direction' unless DIRECTIONS.include?(@direction)
+
+    send("advance_to_#{direction.downcase}")
+    validate_movement!
   end
 
   def move_right
@@ -42,7 +33,23 @@ class Robot
 
   private
 
-  def validate!
+  def validate_movement!
     raise 'Movement exceed dimensions' unless @position.valid?
+  end
+
+  def advance_to_north
+    @position.y_coord += 1
+  end
+
+  def advance_to_east
+    @position.x_coord += 1
+  end
+
+  def advance_to_south
+    @position.y_coord -= 1
+  end
+
+  def advance_to_west
+    @position.x_coord -= 1
   end
 end
